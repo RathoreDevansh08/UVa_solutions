@@ -2,84 +2,75 @@
 
 using namespace std;
 
-struct Test 
-{ 
-   int x, y, z; 
-}; 
+struct Contestant{
+	bool solved[10];
+	int attempt[10];
+	int penalty,count;
+};
 
-bool comparator(Test a,Test b)
-{
-	if(a.y>b.y)
-	{
-		return true;
-	}
-	else if(a.y==b.y && a.z<b.z)
-	{
-		return true;
-	}
-	else if(a.y==b.y && a.z==b.z && a.x<b.x)
-	{
-		return true;
-	}
-	return false;
+map<int, Contestant> Contest;
+vector< int > Index;
+
+bool comp(int A, int B) {
+	if (Contest[A].count != Contest[B].count)
+		return (Contest[A].count > Contest[B].count);
+	if (Contest[A].penalty != Contest[B].penalty)
+		return (Contest[A].penalty < Contest[B].penalty);
+	return (A < B);
 }
 
-int main()
-{
-	int t,c,p,time,k=0;
-	char ch;
-	int tim[101],que[101];
-	cin>>t;
+int main() {
+	int T;
+	stringstream ss;
+	string str;
+	getline(cin, str);
+
+	ss.clear();
+	ss << str;
+	ss >> T;
 	
-	string st,sp;
-	getline(cin,sp);
-	while(t--)
-	{
-		vector<Test>v; 
-		int comp[101][10];
-		for(int i=0;i<=100;i++)
-		{
-			tim[i]=0;que[i]=0;
-			for(int j=0;j<10;j++)
-			{
-				comp[i][j]=0;
-			}
-		}
-		cout<<k++<<"\n";
-		while(getline(cin,st))
-		{
+	getline(cin, str);
+
+	while (T--) {
+		Contest.clear();
+		Index.clear();
+		while (getline(cin, str)) {
+			if (str.empty()) break;
+			int A, B, C;
+			string D;
+			ss.clear();
+			ss << str;
+			ss >> A >> B >> C >> D;
 			
-			stringstream ss(st);
-			ss>>c>>p>>time>>ch;
-			
-			if(ch=='C' && comp[c][p]!=1)
-			{
-				tim[c]+=time;
-				que[c]+=1;
-				comp[c][p]=1;
+			if (Contest.find(A) == Contest.end()) {
+				Contestant Con;
+				memset(Con.solved, false, sizeof Con.solved);
+				memset(Con.attempt, 0, sizeof Con.attempt);
+				Con.penalty = 0;
+				Con.count = 0;
+				
+				Index.push_back(A);
+				Contest[A] = Con;
 			}
-			else if(ch=='I' && comp[c][p]!=1)
-			{
-				tim[c]+=20;
+			if (D == "C" || D == "I") {
+				if (Contest[A].solved[B]) continue;
+				
+				if (D == "C") {
+					Contest[A].solved[B] = true;
+					Contest[A].penalty += (20 * Contest[A].attempt[B] + C);
+					Contest[A].count += 1;
+				}
+				else {
+					Contest[A].attempt[B] += 1;
+				}
 			}
 		}
-		for(int i=0;i<101;i++)
-		{
-			if(tim[i]!=0)
-			{
-				if(que[i]==0)tim[i]=0;
-				v.push_back({i,que[i],tim[i]});
-			}
+		sort(Index.begin(), Index.end(), comp);
+		for (int i = 0; i < Index.size(); i++) {
+			cout << Index[i] << " " << Contest[Index[i]].count << " " << Contest[Index[i]].penalty << endl;
 		}
-		
-		sort(v.begin(),v.end(),comparator);
-		
-		for(int i=0;i<v.size();i++)
-		{
-			cout<<v[i].x<<" "<<v[i].y<<" "<<v[i].z<<"\n";
-		}
-		
-		cout<<"\n";
+		if (T) cout << endl;
 	}
 	return 0;
 }
+

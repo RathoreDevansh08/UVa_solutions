@@ -2,7 +2,6 @@
 #include <cmath>
 #include <cstring>
 using namespace std;
-
 typedef unsigned long long ull;
 
 int n, x;

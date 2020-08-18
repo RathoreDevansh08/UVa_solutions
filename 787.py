@@ -23,7 +23,6 @@ def MaxSubArrayProduct(arr):
             max_so_far = max_ending_here
     return max_so_far
 
-
 def MAXPRODUCT(array):
     curr_max_prod = array[0]
     prev_max_prod = array[0]
@@ -38,7 +37,6 @@ def MAXPRODUCT(array):
         prev_max_prod = curr_min_prod
 
     return ans
-
 
 while True:
     try:

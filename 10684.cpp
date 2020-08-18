@@ -1,5 +1,4 @@
 #include<iostream>
-
 using namespace std;
 
 int main()
@@ -22,5 +21,6 @@ int main()
 		if(mx>0) cout<<"The maximum winning streak is "<<mx<<".\n";
 		else cout<<"Losing streak.\n";
 	}
+	
 	return 0;
 }

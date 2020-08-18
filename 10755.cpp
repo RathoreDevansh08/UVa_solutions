@@ -96,8 +96,8 @@ int main()
 {
 	ios::sync_with_stdio(false);
 	cin.tie(false);
+	
 	int t, c = 0;
-
 	cin>>t;
 	while(t--)
 	{
